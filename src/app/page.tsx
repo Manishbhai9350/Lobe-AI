@@ -1,20 +1,28 @@
-import { caller, getQueryClient, trpc } from "@/trpc/server";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
-import Client from "./_components/client";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+
+export default function Home() {
 
 
-export default async function Home() {
+  const trpc = useTRPC()
+  const invok = useMutation(trpc.invoke.mutationOptions())
 
-  const queryClient = getQueryClient();
+  function Invoke(){
 
-  void queryClient.prefetchQuery(trpc.hello.queryOptions({name:'MEOW'}));
+    const email = prompt('Enter Your Email')?.toString();
+
+    if(!email) return;
+
+    invok.mutate({email})
+    
+  }
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<p>Loading....</p>}>
-        <Client />
-      </Suspense>
-    </HydrationBoundary>
+    <Button onClick={Invoke}>
+      Invoke Hallo Job
+    </Button>
   );
 }

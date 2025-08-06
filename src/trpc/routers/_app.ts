@@ -5,28 +5,16 @@ export const appRouter = createTRPCRouter({
   invoke:baseProcedure
   .input(
     z.object({
-      email:z.string()
+      text:z.string()
     })
   ).mutation(async ({input}) => {
     await inngest.send({
-      name:"test/hello.world",
+      name:"gather/text",
       data:{
-        email:input.email
+        text:input.text
       }
     })
   })
-  ,
-  hello: baseProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      }),
-    )
-    .query((opts) => {
-      return {
-        greeting: `hello ${opts.input.name}`,
-      };
-    }),
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

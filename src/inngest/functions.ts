@@ -1,4 +1,4 @@
-import { openai, createAgent } from "@inngest/agent-kit";
+import { createAgent, gemini } from "@inngest/agent-kit";
 import { inngest } from "./client";
 
 export const helloWorld = inngest.createFunction(
@@ -9,15 +9,15 @@ export const helloWorld = inngest.createFunction(
     
     const Gatherer =  createAgent({
       name:'gatherer',
-      system:"You are an expert summarizer. and you summarize into two words.",
-      model: openai({model:"gpt-4o"})
+      system:"You are an expert and industry level developer",
+      model: gemini({model:'gemini-1.5-flash'})
     })
 
     console.log(event.data.text)
     console.log(process.env.OPENAI_API_KEY)
 
     const {output} = await Gatherer.run(`
-        Summarize the following text: ${event.data.text}
+        Do the following: ${event.data.text}
       `)
 
     console.log(output)
